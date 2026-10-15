@@ -71,6 +71,31 @@ fn available_filters_by_configured_auth() {
     }));
 }
 
+/// TS parity (cloudflare-auth.ts): a Cloudflare credential counts as signed
+/// in only once the endpoint placeholders can materialize — an API key
+/// without the account id (and gateway id for the AI Gateway) is not signed
+/// in, not a request doomed to a `{CLOUDFLARE_ACCOUNT_ID}` URL.
+#[test]
+fn cloudflare_auth_requires_endpoint_env() {
+    let stored = serde_json::json!({
+        "cloudflare-workers-ai": { "type": "api_key", "key": "cf-key" },
+        "cloudflare-ai-gateway": { "type": "api_key", "key": "cf-key" }
+    });
+    let cleanup = || {
+        std::env::remove_var("CLOUDFLARE_ACCOUNT_ID");
+        std::env::remove_var("CLOUDFLARE_GATEWAY_ID");
+    };
+    let registry = ModelRegistry::in_memory(auth_with(&stored));
+    assert!(!registry.has_configured_auth(&model("m", "cloudflare-workers-ai")));
+    std::env::set_var("CLOUDFLARE_ACCOUNT_ID", "acct");
+    assert!(registry.has_configured_auth(&model("m", "cloudflare-workers-ai")));
+    // The gateway also needs the gateway id.
+    assert!(!registry.has_configured_auth(&model("m", "cloudflare-ai-gateway")));
+    std::env::set_var("CLOUDFLARE_GATEWAY_ID", "gw");
+    assert!(registry.has_configured_auth(&model("m", "cloudflare-ai-gateway")));
+    cleanup();
+}
+
 #[test]
 fn rlm_searchable_models_gate_one_stale_provider_across_its_models() {
     // The per-provider status memo must answer every model of a provider

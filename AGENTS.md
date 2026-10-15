@@ -1,6 +1,6 @@
 # AGENTS.md
 
-Development rules for Prime Agent (Rust) on PrimeIntellect-ai/prime-agent, branch `main`.
+Development rules for Prime Agent (Rust) on fluid-notion-labs/prime-agent, branch `main`.
 Every contributor (human or agent) must read this before working on this repo.
 
 ## Repository
@@ -16,9 +16,9 @@ Every contributor (human or agent) must read this before working on this repo.
   suggestions, not as attribution for work merged from branches. A PR's commits carry
   one identity: the ambient git config's. Fabricated or hand-written trailers (including
   noreply forms) misattribute commits to unrelated GitHub accounts.
-- The repo is PrimeIntellect-ai/prime-agent; the Rust implementation lives on the `main` branch.
+- The repo is fluid-notion-labs/prime-agent; the Rust implementation lives on the `main` branch.
 - PRs go to the org repo with base `main`:
-  `gh pr create --repo PrimeIntellect-ai/prime-agent --base main`.
+  `gh pr create --repo fluid-notion-labs/prime-agent --base main`.
 - CI runs on the org's billing: `.github/workflows/continuous.yml` on `main` pushes and
   `release.yml` on version tags.
 - Parity ground truth is unchanged: a read-only checkout of the TS implementation (this

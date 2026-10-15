@@ -244,6 +244,14 @@ impl ModelRegistry {
     }
 
     pub fn has_configured_auth(&self, model: &Model) -> bool {
+        // TS parity (cloudflare-auth.ts): the Cloudflare providers' auth
+        // resolve needs the endpoint account/gateway ids before it counts as
+        // signed in — an API key alone never yields a usable base URL.
+        if pa_ai::is_cloudflare_provider(&model.provider)
+            && !pa_ai::cloudflare_endpoint_env_resolved(&model.provider)
+        {
+            return false;
+        }
         self.auth.has_auth(&model.provider)
             || self.has_configured_provider_request_auth(&model.provider)
     }
