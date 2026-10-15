@@ -3,6 +3,7 @@
 use std::sync::Arc;
 
 use crate::event_stream::AssistantMessageEventStream;
+use crate::providers::cloudflare_stream;
 use crate::providers::simple_options::default_request_max_tokens;
 use crate::registry::{ensure_builtins, get_api_provider};
 use crate::types::{AssistantMessage, Context, Model, SimpleStreamOptions, StreamOptions};
@@ -117,6 +118,8 @@ pub fn stream(
     context: &Context,
     options: Option<StreamOptions>,
 ) -> Result<AssistantMessageEventStream, ProviderError> {
+    let resolved = cloudflare_stream::resolve_cloudflare_model(model);
+    let model = resolved.as_ref();
     let provider = resolve_provider(&model.api)?;
     let mut options = options;
     clamp_output_budget(model, context, options.as_mut());
@@ -147,6 +150,8 @@ pub fn stream_simple(
     context: &Context,
     options: Option<SimpleStreamOptions>,
 ) -> Result<AssistantMessageEventStream, ProviderError> {
+    let resolved = cloudflare_stream::resolve_cloudflare_model(model);
+    let model = resolved.as_ref();
     let provider = resolve_provider(&model.api)?;
     let mut options = options;
     // A `None` caller still gets the default output budget downstream

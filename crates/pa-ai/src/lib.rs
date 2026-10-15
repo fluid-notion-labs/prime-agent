@@ -22,6 +22,9 @@ mod stream;
 mod prime_inference_differential_test;
 
 pub use event_stream::{AssistantMessageEventExt, AssistantMessageEventStream};
+pub use providers::cloudflare_stream::{
+    cloudflare_endpoint_env_resolved, is_cloudflare_provider, resolve_cloudflare_model,
+};
 pub use providers::faux;
 
 /// Codex WebSocket session debugging and cleanup surface (TS
