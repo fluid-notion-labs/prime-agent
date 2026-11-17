@@ -1577,6 +1577,10 @@ dependencies = [
 ]
 
 [[package]]
+name = "pa-merida"
+version = "0.10.0"
+
+[[package]]
 name = "pa-models"
 version = "0.10.0"
 dependencies = [
