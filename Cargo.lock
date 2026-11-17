@@ -1579,6 +1579,13 @@ dependencies = [
 [[package]]
 name = "pa-merida"
 version = "0.10.0"
+dependencies = [
+ "anyhow",
+ "pa-types",
+ "serde_json",
+ "tempfile",
+ "tokio",
+]
 
 [[package]]
 name = "pa-models"
