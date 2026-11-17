@@ -1,0 +1,25 @@
+# Task: per-provider send rate limiter + retry caps (daemon-side, benefits pa-tui AND merida)
+
+Repo: /data/projects/explorations/nursery/prime-agent (jj-colocated; jj commits only).
+
+## CRITICAL — working-copy hygiene
+The default workspace's @ is the pa-tui builds-view change (44b1e199) pending landing via quinn. DO NOT touch it.
+Instead: `jj workspace add ../prime-agent-ratelimit` (off current main 5f218f78) and do ALL work there. One jj change at the end, properly described. No pushes.
+
+## Feature (Nick, 2026-11-18)
+A central history of chat sends per provider. When sends approach a provider's per-minute cap (e.g. 20/min for the cf/workers-ai provider today), PAUSE sending (debounce) until a slot frees — converge to the limit rather than erroring. Nick's quota goes 20/min -> 50/min soon, so the limits MUST be editable in the settings/config file.
+Also: retry limits per provider (cap retries; a retry counts against that provider's window).
+
+## Design pointers (verify, then adapt)
+- Exploration start: crates/pa-core/src/session_engine/ (engine.rs, auto_retry/ — retries already have machinery) and crates/pa-ai/src/providers/. Find where provider chat requests are actually issued — the limiter belongs THERE (engine side), so client sends AND auto-retries both consume the same window.
+- Limiter: per-provider sliding 60s window (VecDeque of timestamps is fine; no over-engineering — no external crates unless already in the workspace). If a send would breach the cap, the request AWaits until the oldest timestamp exits the window (bounded wait — if wait exceeds a sane cap, e.g. 2x window, fail with a clear 'rate limited' error so clients don't hang forever).
+- Config: follow the existing settings plumbing (crates/pa-core/src/settings/). Add something like model.rate_limits = { "<provider>": { "requests_per_minute": 20, "max_retries": 4 } }; unlimited when absent. Match the repo's existing config style exactly (look at how other settings are defined/documented/loaded).
+- Client visibility: if there's a cheap way to surface 'paused Ns for provider quota' (existing status/event channel), do it; if it would require inventing new plumbing, SKIP it and note it in the report.
+
+## Gate
+cargo test -p on every crate you touch; fmt is relaxed per Nick (skip fmt/clippy). No pre-existing-debt churn.
+
+## Reporting (MANDATORY)
+- Use rlm.progress_note() at milestones (design decided, limiter wired, config done, tests green).
+- Reply to parent via agent_message.send(receiver_role='parent') when done: what landed (change id + description), gate results, config example, and any seams you could not add.
+- Silence or exit-without-artifact is treated as FAILURE. If blocked, reply with the blocker instead of exiting quietly.
