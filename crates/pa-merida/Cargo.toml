@@ -4,4 +4,14 @@ version.workspace = true
 edition.workspace = true
 license.workspace = true
 
+# gpui comes from the vendored fork closure (same provenance as
+# research/gpui-bevy-spike): PATH deps into /data/projects/explorations/vendor,
+# pinned by the [patch.crates-io] stanza at the workspace root — the fork's
+# own patch table does not propagate through path dependencies.
 [dependencies]
+gpui = { package = "gpui-unofficial", path = "/data/projects/explorations/vendor/gpui-unofficial/crates/gpui", features = ["wgpu"] }
+gpui_platform = { package = "gpui-platform-gpui-unofficial", path = "/data/projects/explorations/vendor/gpui-unofficial/crates/gpui_platform" }
+
+[lints]
+workspace = true
+

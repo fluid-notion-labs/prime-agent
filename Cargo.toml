@@ -19,6 +19,38 @@ members = [
 [patch.crates-io]
 crossterm = { path = "vendor/crossterm" }
 
+# pa-merida consumes the vendored gpui fork closure (same provenance as
+# research/gpui-bevy-spike). The fork republishes its internal crates on
+# crates.io with -gpui-unofficial suffixes; pin every one to the same
+# vendored tree so the graph can never mix vendored and published copies
+# (the fork's own [patch.crates-io] does not propagate through path deps).
+
+collections-gpui-unofficial = { path = "/data/projects/explorations/vendor/gpui-unofficial/crates/collections-gpui-unofficial" }
+derive-refineable-gpui-unofficial = { path = "/data/projects/explorations/vendor/gpui-unofficial/crates/derive-refineable-gpui-unofficial" }
+gpui-apple-gpui-unofficial = { path = "/data/projects/explorations/vendor/gpui-unofficial/crates/gpui-apple-gpui-unofficial" }
+gpui-linux-gpui-unofficial = { path = "/data/projects/explorations/vendor/gpui-unofficial/crates/gpui_linux" }
+gpui-macos-gpui-unofficial = { path = "/data/projects/explorations/vendor/gpui-unofficial/crates/gpui-macos-gpui-unofficial" }
+gpui-macros-gpui-unofficial = { path = "/data/projects/explorations/vendor/gpui-unofficial/crates/gpui-macros-gpui-unofficial" }
+gpui-platform-gpui-unofficial = { path = "/data/projects/explorations/vendor/gpui-unofficial/crates/gpui_platform" }
+gpui-shared-string-gpui-unofficial = { path = "/data/projects/explorations/vendor/gpui-unofficial/crates/gpui-shared-string-gpui-unofficial" }
+gpui-unofficial = { path = "/data/projects/explorations/vendor/gpui-unofficial/crates/gpui" }
+gpui-util-gpui-unofficial = { path = "/data/projects/explorations/vendor/gpui-unofficial/crates/gpui-util-gpui-unofficial" }
+gpui-web-gpui-unofficial = { path = "/data/projects/explorations/vendor/gpui-unofficial/crates/gpui-web-gpui-unofficial" }
+gpui-wgpu-gpui-unofficial = { path = "/data/projects/explorations/vendor/gpui-unofficial/crates/gpui_wgpu" }
+gpui-windows-gpui-unofficial = { path = "/data/projects/explorations/vendor/gpui-unofficial/crates/gpui-windows-gpui-unofficial" }
+http-client-gpui-unofficial = { path = "/data/projects/explorations/vendor/gpui-unofficial/crates/http-client-gpui-unofficial" }
+media-gpui-unofficial = { path = "/data/projects/explorations/vendor/gpui-unofficial/crates/media-gpui-unofficial" }
+path-gpui-unofficial = { path = "/data/projects/explorations/vendor/gpui-unofficial/crates/path-gpui-unofficial" }
+perf-gpui-unofficial = { path = "/data/projects/explorations/vendor/gpui-unofficial/crates/perf-gpui-unofficial" }
+refineable-gpui-unofficial = { path = "/data/projects/explorations/vendor/gpui-unofficial/crates/refineable-gpui-unofficial" }
+scheduler-gpui-unofficial = { path = "/data/projects/explorations/vendor/gpui-unofficial/crates/scheduler-gpui-unofficial" }
+sum-tree-gpui-unofficial = { path = "/data/projects/explorations/vendor/gpui-unofficial/crates/sum-tree-gpui-unofficial" }
+util-gpui-unofficial = { path = "/data/projects/explorations/vendor/gpui-unofficial/crates/util-gpui-unofficial" }
+util-macros-gpui-unofficial = { path = "/data/projects/explorations/vendor/gpui-unofficial/crates/util-macros-gpui-unofficial" }
+zlog-gpui-unofficial = { path = "/data/projects/explorations/vendor/gpui-unofficial/crates/zlog-gpui-unofficial" }
+ztracing-gpui-unofficial = { path = "/data/projects/explorations/vendor/gpui-unofficial/crates/ztracing-gpui-unofficial" }
+ztracing-macro-gpui-unofficial = { path = "/data/projects/explorations/vendor/gpui-unofficial/crates/ztracing-macro-gpui-unofficial" }
+
 [workspace.package]
 version = "0.10.0"
 edition = "2021"
