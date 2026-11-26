@@ -4,7 +4,7 @@
 
 set -euo pipefail
 
-REPO_DIR="${HOME}/code/prime-agent"  # Adjust to your mbpro clone location
+REPO_DIR="${HOME}/Projects/nursery/prime-agent"  # Adjust to your mbpro clone location
 RELEASES_DIR="${HOME}/.prime-agent/releases"
 GOLD_LINK="${HOME}/.local/bin/prime-agent"
 
